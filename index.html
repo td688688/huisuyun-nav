@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="汇速云官方导航页，提供主站、备用站和订阅入口。">
+  <meta name="description" content="汇速云官方导航页，提供用户中心主入口、备用入口和服务状态入口。">
   <title>汇速云导航</title>
   <style>
     :root {
@@ -129,7 +129,7 @@
 
     .primary { background: var(--blue); }
     .backup { background: var(--green); }
-    .sub { background: var(--violet); }
+    .status-link { background: var(--violet); }
     .warn { background: var(--amber); }
 
     .status {
@@ -190,25 +190,25 @@
         <span class="mark">HS</span>
         <span>汇速云官方导航</span>
       </div>
-      <h1 id="title">选择可用入口</h1>
-      <p class="lead">这里集中放置主站、备用站和订阅入口。若某个域名临时不可用，优先切换备用站，再刷新客户端订阅。</p>
+      <h1 id="title">选择用户入口</h1>
+      <p class="lead">这里提供面向用户的登录、注册和订阅管理入口。超级用户管理后台已从普通入口拆分，不在导航页公开展示。</p>
     </section>
 
     <section class="grid" aria-label="入口">
       <article class="card">
-        <h2>官网入口</h2>
-        <p>主站用于日常登录、授权验证、套餐管理和 VPN 节点订阅。备用站用于主域名异常时继续访问。</p>
+        <h2>用户中心</h2>
+        <p>主入口用于用户登录、注册、查看套餐、管理订阅、查看节点状态和获取客户端使用信息。</p>
         <div class="actions">
-          <a class="button primary" href="https://huisuyun.xyz/">打开主站</a>
-          <a class="button backup" href="https://huisuyun.online/">打开备用站</a>
+          <a class="button primary" href="https://huisuyun.xyz/login">进入主入口</a>
+          <a class="button backup" href="https://huisuyun.online/login">进入备用入口</a>
         </div>
       </article>
 
       <article class="card">
-        <h2>订阅入口</h2>
-        <p>客户端节点更新优先使用订阅入口。若客户端提示连接失败，请先刷新订阅，再切换备用入口。</p>
+        <h2>服务状态</h2>
+        <p>订阅原始配置不直接展示给普通网页用户。需要刷新节点时，请先登录用户中心，在订阅管理中复制或刷新订阅。</p>
         <div class="actions">
-          <a class="button sub" href="https://sub.huisuyun.xyz/sub">打开订阅</a>
+          <a class="button status-link" href="https://huisuyun.xyz/nodes">查看节点状态</a>
           <a class="button warn" href="https://api.huisuyun.online/actuator/health">备用健康检查</a>
         </div>
       </article>
@@ -216,11 +216,11 @@
 
     <section class="status" aria-label="状态基线">
       <div>
-        <strong>主站</strong>
+        <strong>主入口</strong>
         huisuyun.xyz
       </div>
       <div>
-        <strong>备用站</strong>
+        <strong>备用入口</strong>
         huisuyun.online
       </div>
       <div>
@@ -230,7 +230,7 @@
     </section>
 
     <footer>
-      本页面最后更新：2026-06-24。若所有入口均不可用，请等待维护完成后重试。
+      最后更新：2026-06-25。若所有入口均不可用，请等待维护完成后重试。
     </footer>
   </main>
 </body>
