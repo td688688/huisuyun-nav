@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="汇速云官方导航页，提供用户中心主入口、备用入口和服务状态入口。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%2314885f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='8' fill='url(%23g)'/%3E%3Ctext x='18' y='25' font-family='sans-serif' font-size='18' font-weight='800' fill='%23fff' text-anchor='middle'%3EHS%3C/text%3E%3C/svg%3E">
   <title>汇速云导航</title>
   <style>
     :root {
@@ -211,17 +212,8 @@
         <h2>用户中心</h2>
         <p>主入口用于用户登录、注册、查看套餐、管理订阅、查看节点状态和获取客户端使用信息。</p>
         <div class="actions">
-          <a class="button primary" data-probe="https://huisuyun.xyz/login" href="https://huisuyun.xyz/login">进入主入口 <span class="probe" data-host="huisuyun.xyz"></span></a>
-          <a class="button backup" data-probe="https://huisuyun.online/login" href="https://huisuyun.online/login">进入备用入口 <span class="probe" data-host="huisuyun.online"></span></a>
-        </div>
-      </article>
-
-      <article class="card">
-        <h2>管理后台</h2>
-        <p>超级用户/代理登录授权管理系统。主域被封时自动跳转备用域名。</p>
-        <div class="actions">
-          <a class="button primary" data-probe="https://admin.huisuyun.xyz/" href="https://admin.huisuyun.xyz/">进入后台 <span class="probe" data-host="admin.huisuyun.xyz"></span></a>
-          <a class="button backup" data-probe="https://vcamultra.fun/admin/" href="https://vcamultra.fun/admin/">备用后台 <span class="probe" data-host="vcamultra.fun"></span></a>
+          <a target="_blank" class="button primary" data-probe="https://huisuyun.xyz/login" href="https://huisuyun.xyz/login">进入主入口 <span class="probe" data-host="huisuyun.xyz"></span></a>
+          <a target="_blank" class="button backup" data-probe="https://huisuyun.online/login" href="https://huisuyun.online/login">进入备用入口 <span class="probe" data-host="huisuyun.online"></span></a>
         </div>
       </article>
 
@@ -229,8 +221,8 @@
         <h2>服务状态</h2>
         <p>订阅原始配置不直接展示给普通网页用户。需要刷新节点时，请先登录用户中心，在订阅管理中复制或刷新订阅。</p>
         <div class="actions">
-          <a class="button status-link" href="https://huisuyun.xyz/nodes">查看节点状态</a>
-          <a class="button warn" href="https://api.huisuyun.online/actuator/health">备用健康检查</a>
+          <a target="_blank" class="button status-link" href="https://huisuyun.xyz/nodes">查看节点状态</a>
+          <a target="_blank" class="button warn" href="https://api.huisuyun.online/actuator/health">备用健康检查</a>
         </div>
       </article>
     </section>
@@ -245,21 +237,13 @@
         huisuyun.online <span class="probe" data-host="huisuyun.online"></span>
       </div>
       <div>
-        <strong>管理后台</strong>
-        admin.huisuyun.xyz <span class="probe" data-host="admin.huisuyun.xyz"></span>
-      </div>
-      <div>
-        <strong>备用后台</strong>
-        vcamultra.fun <span class="probe" data-host="vcamultra.fun"></span>
-      </div>
-      <div>
         <strong>导航站</strong>
         huisuyun.cfd
       </div>
     </section>
 
     <footer>
-      最后更新：2026-07-08。导航页托管于 GitHub Pages，不易被封。各入口旁的圆点实时探测可达性（绿=正常，红=不可达），点击自动跳转可用域名。若所有入口均不可用，请等待维护完成后重试。
+      最后更新：2026-07-09。导航页托管于 GitHub Pages，不易被封。各入口旁的圆点实时探测可达性（绿=正常，红=不可达），点击在新窗口打开。若所有入口均不可用，请等待维护完成后重试。
     </footer>
   </main>
   <script>
