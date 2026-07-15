@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="汇速云官方导航页，提供用户中心主入口、备用入口和服务状态入口。">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%2314885f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='8' fill='url(%23g)'/%3E%3Ctext x='18' y='25' font-family='sans-serif' font-size='18' font-weight='800' fill='%23fff' text-anchor='middle'%3EHS%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="汇速云官方导航页，提供主站、备用站和订阅入口，含实时容灾检测。">
   <title>汇速云导航</title>
   <style>
     :root {
@@ -17,12 +16,11 @@
       --blue: #2563eb;
       --green: #14885f;
       --amber: #a15c00;
+      --red: #dc2626;
       --violet: #6d4aff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -42,9 +40,7 @@
       padding: 40px 0;
     }
 
-    .hero {
-      padding: 28px 0 24px;
-    }
+    .hero { padding: 28px 0 24px; }
 
     .brand {
       display: inline-flex;
@@ -69,7 +65,6 @@
       margin: 24px 0 10px;
       font-size: 42px;
       line-height: 1.15;
-      letter-spacing: 0;
     }
 
     .lead {
@@ -80,6 +75,82 @@
       line-height: 1.7;
     }
 
+    /* Failover banner */
+    .banner {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      background: rgba(220, 38, 38, 0.08);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      color: var(--red);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+    .banner.ok {
+      background: rgba(20, 136, 95, 0.08);
+      border-color: rgba(20, 136, 95, 0.3);
+      color: var(--green);
+    }
+    .banner.hidden { display: none; }
+
+    /* Live status section */
+    .status-live {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 28px rgba(20, 32, 52, 0.08);
+      backdrop-filter: blur(8px);
+    }
+    .status-live h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .status-item .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--muted);
+    }
+    .dot.dot-ok { background: var(--green); }
+    .dot.dot-down { background: var(--red); }
+    .dot.dot-pending { background: var(--amber); animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .status-item .info { display: flex; flex-direction: column; gap: 2px; }
+    .status-item strong { font-size: 14px; }
+    .status-item .status-text { font-size: 12px; color: var(--muted); }
+
+    .recheck-btn {
+      margin-top: 12px;
+      padding: 6px 16px;
+      border: 1px solid var(--blue);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--blue);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .recheck-btn:hover { background: rgba(37, 99, 235, 0.06); }
+
+    /* Entry cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -99,7 +170,6 @@
     .card h2 {
       margin: 0 0 8px;
       font-size: 18px;
-      letter-spacing: 0;
     }
 
     .card p {
@@ -130,9 +200,104 @@
 
     .primary { background: var(--blue); }
     .backup { background: var(--green); }
-    .status-link { background: var(--violet); }
+    .sub { background: var(--violet); }
     .warn { background: var(--amber); }
 
+    /* Subscription list */
+    .subscriptions {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 28px rgba(20, 32, 52, 0.08);
+      backdrop-filter: blur(8px);
+    }
+    .subscriptions h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+    .subscriptions > p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .sub-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.6);
+    }
+    .sub-card:last-child { margin-bottom: 0; }
+
+    .sub-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .sub-header h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+    .sub-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--wash);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sub-url {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      flex-wrap: wrap;
+    }
+    .badge {
+      flex-shrink: 0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .badge-xyz { background: var(--blue); }
+    .badge-online { background: var(--green); }
+
+    .sub-url code {
+      flex: 1;
+      min-width: 0;
+      font-size: 12px;
+      color: var(--ink);
+      background: var(--wash);
+      padding: 4px 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .copy-btn {
+      flex-shrink: 0;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* Status baseline */
     .status {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -140,7 +305,7 @@
       margin-top: 14px;
     }
 
-    .status div {
+    .status > div {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.82);
@@ -168,32 +333,11 @@
         width: min(100vw - 24px, 960px);
         padding: 24px 0;
       }
-
-      h1 {
-        font-size: 32px;
-      }
-
-      .grid,
-      .status {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        padding: 16px;
-      }
+      h1 { font-size: 32px; }
+      .grid, .status, .status-grid { grid-template-columns: 1fr; }
+      .card { padding: 16px; }
+      .sub-url code { font-size: 11px; }
     }
-    .probe {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #d0d5dd;
-      vertical-align: middle;
-      margin-left: 4px;
-      transition: background .3s;
-    }
-    .probe.ok { background: #14885f; }
-    .probe.bad { background: #dc2626; }
   </style>
 </head>
 <body>
@@ -203,38 +347,153 @@
         <span class="mark">HS</span>
         <span>汇速云官方导航</span>
       </div>
-      <h1 id="title">选择用户入口</h1>
-      <p class="lead">这里提供面向用户的登录、注册和订阅管理入口。所有入口点击在新窗口打开，旁侧圆点实时探测可达性。</p>
+      <h1 id="title">选择可用入口</h1>
+      <p class="lead">这里集中放置主站、备用站和订阅入口。页面会自动检测主域名可达性，主域名被封时请改用 .online 备用入口。</p>
+    </section>
+
+    <div id="failover-banner" class="banner hidden">
+      ⚠️ 主站 sub.huisuyun.xyz 当前不可达，请改用 .online 备用地址订阅。下方所有订阅均提供 .online 双版本。
+    </div>
+
+    <section class="status-live" aria-label="实时入口状态">
+      <h2>入口实时状态</h2>
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="dot dot-pending" id="dot-xyz"></span>
+          <div class="info">
+            <strong>主站 sub.huisuyun.xyz</strong>
+            <span class="status-text" id="text-xyz">检测中…</span>
+          </div>
+        </div>
+        <div class="status-item">
+          <span class="dot dot-pending" id="dot-online"></span>
+          <div class="info">
+            <strong>备用 sub.huisuyun.online</strong>
+            <span class="status-text" id="text-online">检测中…</span>
+          </div>
+        </div>
+      </div>
+      <button class="recheck-btn" id="recheck-btn">重新检测</button>
     </section>
 
     <section class="grid" aria-label="入口">
       <article class="card">
-        <h2>用户中心</h2>
-        <p>主入口用于用户登录、注册、查看套餐、管理订阅、查看节点状态和获取客户端使用信息。</p>
+        <h2>官网入口</h2>
+        <p>主站用于日常登录、授权验证、套餐管理和 VPN 节点订阅。备用站用于主域名异常时继续访问。</p>
         <div class="actions">
-          <a target="_blank" class="button primary" data-probe="https://huisuyun.xyz/login" href="https://huisuyun.xyz/login">进入主入口 <span class="probe" data-host="huisuyun.xyz"></span></a>
-          <a target="_blank" class="button backup" data-probe="https://huisuyun.online/login" href="https://huisuyun.online/login">进入备用入口 <span class="probe" data-host="huisuyun.online"></span></a>
+          <a class="button primary" href="https://huisuyun.xyz/">打开主站</a>
+          <a class="button backup" href="https://huisuyun.online/">打开备用站</a>
         </div>
       </article>
 
       <article class="card">
-        <h2>服务状态</h2>
-        <p>订阅原始配置不直接展示给普通网页用户。需要刷新节点时，请先登录用户中心，在订阅管理中复制或刷新订阅。</p>
+        <h2>订阅管理</h2>
+        <p>客户端节点更新优先使用订阅入口。若客户端提示连接失败，请先刷新订阅，再切换备用入口。</p>
         <div class="actions">
-          <a target="_blank" class="button status-link" href="https://huisuyun.xyz/nodes">查看节点状态</a>
-          <a target="_blank" class="button warn" href="https://api.huisuyun.online/actuator/health">备用健康检查</a>
+          <a class="button sub" href="https://sub.huisuyun.xyz/sub">订阅管理页</a>
+          <a class="button warn" href="https://api.huisuyun.online/actuator/health">健康检查</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="subscriptions" aria-label="订阅地址">
+      <h2>订阅地址（双版本容灾）</h2>
+      <p>每个订阅提供 <strong>.xyz（主）</strong>和<strong> .online（备）</strong>两个地址。主域名不可达时请改用 .online 版本。点击"复制"按钮可直接复制到剪贴板。</p>
+
+      <article class="sub-card">
+        <div class="sub-header">
+          <h3>通用订阅</h3>
+          <span class="sub-tag">90+ 全球节点 + Reality + Hysteria2 备份</span>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-xyz">主 .xyz</span>
+          <code>https://sub.huisuyun.xyz/vpn/api/sub/c4004962745011f1b97f5600064877a0</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.xyz/vpn/api/sub/c4004962745011f1b97f5600064877a0">复制</button>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-online">备 .online</span>
+          <code>https://sub.huisuyun.online/vpn/api/sub/c4004962745011f1b97f5600064877a0</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.online/vpn/api/sub/c4004962745011f1b97f5600064877a0">复制</button>
+        </div>
+      </article>
+
+      <article class="sub-card">
+        <div class="sub-header">
+          <h3>独享订阅 Sub 7</h3>
+          <span class="sub-tag">日本独享 IP 166.1.101.234</span>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-xyz">主 .xyz</span>
+          <code>https://sub.huisuyun.xyz/vpn/api/sub/5e80902810ad476bbaefef3e693e9513</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.xyz/vpn/api/sub/5e80902810ad476bbaefef3e693e9513">复制</button>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-online">备 .online</span>
+          <code>https://sub.huisuyun.online/vpn/api/sub/5e80902810ad476bbaefef3e693e9513</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.online/vpn/api/sub/5e80902810ad476bbaefef3e693e9513">复制</button>
+        </div>
+      </article>
+
+      <article class="sub-card">
+        <div class="sub-header">
+          <h3>独享订阅 Sub 8</h3>
+          <span class="sub-tag">日本独享 IP 104.164.13.244</span>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-xyz">主 .xyz</span>
+          <code>https://sub.huisuyun.xyz/vpn/api/sub/2ce1e89ddb354e52946d3e0411492c57</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.xyz/vpn/api/sub/2ce1e89ddb354e52946d3e0411492c57">复制</button>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-online">备 .online</span>
+          <code>https://sub.huisuyun.online/vpn/api/sub/2ce1e89ddb354e52946d3e0411492c57</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.online/vpn/api/sub/2ce1e89ddb354e52946d3e0411492c57">复制</button>
+        </div>
+      </article>
+
+      <article class="sub-card">
+        <div class="sub-header">
+          <h3>独享订阅 Sub 9</h3>
+          <span class="sub-tag">日本独享 IP 142.252.214.159</span>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-xyz">主 .xyz</span>
+          <code>https://sub.huisuyun.xyz/vpn/api/sub/7b6d56f4c72e48c498f843381b64976b</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.xyz/vpn/api/sub/7b6d56f4c72e48c498f843381b64976b">复制</button>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-online">备 .online</span>
+          <code>https://sub.huisuyun.online/vpn/api/sub/7b6d56f4c72e48c498f843381b64976b</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.online/vpn/api/sub/7b6d56f4c72e48c498f843381b64976b">复制</button>
+        </div>
+      </article>
+
+      <article class="sub-card">
+        <div class="sub-header">
+          <h3>独享订阅 Sub 10</h3>
+          <span class="sub-tag">美国独享 IP 168.158.90.250 (IPRoyal Phoenix)</span>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-xyz">主 .xyz</span>
+          <code>https://sub.huisuyun.xyz/vpn/api/sub/27bdfbee94594d909fb7b34e0f6cfb5c</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.xyz/vpn/api/sub/27bdfbee94594d909fb7b34e0f6cfb5c">复制</button>
+        </div>
+        <div class="sub-url">
+          <span class="badge badge-online">备 .online</span>
+          <code>https://sub.huisuyun.online/vpn/api/sub/27bdfbee94594d909fb7b34e0f6cfb5c</code>
+          <button class="copy-btn" data-copy="https://sub.huisuyun.online/vpn/api/sub/27bdfbee94594d909fb7b34e0f6cfb5c">复制</button>
         </div>
       </article>
     </section>
 
     <section class="status" aria-label="状态基线">
       <div>
-        <strong>主入口</strong>
-        huisuyun.xyz <span class="probe" data-host="huisuyun.xyz"></span>
+        <strong>主站</strong>
+        huisuyun.xyz
       </div>
       <div>
-        <strong>备用入口</strong>
-        huisuyun.online <span class="probe" data-host="huisuyun.online"></span>
+        <strong>备用站</strong>
+        huisuyun.online
       </div>
       <div>
         <strong>导航站</strong>
@@ -243,33 +502,170 @@
     </section>
 
     <footer>
-      最后更新：2026-07-09。导航页托管于 GitHub Pages，不易被封。各入口旁的圆点实时探测可达性（绿=正常，红=不可达），点击在新窗口打开。若所有入口均不可用，请等待维护完成后重试。
+      本页面最后更新：2026-07-15。页面自动检测主域名可达性（fetch no-cors + 5s 超时）。若所有入口均不可用，请等待维护完成后重试。
     </footer>
   </main>
+
   <script>
-    // 域名可达性探测：对每个 data-probe 的入口发 HEAD 请求，标注绿/红
-    // GitHub Pages 是 HTTPS，fetch 跨域 HEAD 默认不携带凭据，mode:'no-cors' 探测可达性
-    async function probeHost(el) {
-      const url = el.getAttribute('data-probe');
-      if (!url) return;
-      const dot = el.querySelector('.probe') || el;
-      try {
-        await fetch(url, { method: 'HEAD', mode: 'no-cors', cache: 'no-store', signal: AbortSignal.timeout(6000) });
-        // no-cors 模式下 opaque 响应也算可达
-        if (dot.classList) { dot.classList.remove('bad'); dot.classList.add('ok'); }
-      } catch (e) {
-        if (dot.classList) { dot.classList.remove('ok'); dot.classList.add('bad'); }
+    /**
+     * Phase 18.F Task 18.19: 容灾切换检测逻辑
+     *
+     * 使用 fetch(mode: 'no-cors') 检测主/备域名可达性：
+     * - no-cors 模式下，只要服务器 TCP 响应（任何 HTTP 状态码），fetch 即 resolve
+     * - DNS 解析失败 / 连接被拒 / 超时 → fetch reject
+     * - 5 秒超时（GFW 封锁通常表现为连接重置或超时）
+     *
+     * GitHub Pages (huisuyun.cfd) 本身不被 GFW 封锁，可作为容灾检测入口。
+     */
+    (function () {
+      "use strict";
+
+      var TIMEOUT_MS = 5000;
+      var XYZ_URL = "https://sub.huisuyun.xyz/?_ping=" + Date.now();
+      var ONLINE_URL = "https://sub.huisuyun.online/?_ping=" + Date.now();
+
+      function checkReachable(url, timeoutMs) {
+        return new Promise(function (resolve) {
+          var settled = false;
+          var controller;
+          try {
+            controller = new AbortController();
+          } catch (e) {
+            // Browser without AbortController — fallback to race
+          }
+
+          var timer = setTimeout(function () {
+            if (!settled) {
+              settled = true;
+              if (controller) controller.abort();
+              resolve(false);
+            }
+          }, timeoutMs);
+
+          var fetchOpts = { mode: "no-cors", cache: "no-store", redirect: "follow" };
+          if (controller) fetchOpts.signal = controller.signal;
+
+          fetch(url, fetchOpts).then(
+            function () {
+              if (!settled) {
+                settled = true;
+                clearTimeout(timer);
+                resolve(true);
+              }
+            },
+            function () {
+              if (!settled) {
+                settled = true;
+                clearTimeout(timer);
+                resolve(false);
+              }
+            }
+          );
+        });
       }
-    }
-    // 页面加载后探测所有带 data-probe 的元素 + data-host 圆点
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('[data-probe]').forEach(el => probeHost(el));
-      // 状态区的 data-host 圆点单独探测
-      document.querySelectorAll('.probe[data-host]').forEach(dot => {
-        const host = dot.getAttribute('data-host');
-        probeHost({ getAttribute: () => 'https://' + host + '/', querySelector: () => dot });
+
+      function setDot(dotId, textId, ok, text) {
+        var dot = document.getElementById(dotId);
+        var text = document.getElementById(textId);
+        if (!dot || !text) return;
+        dot.className = "dot " + (ok ? "dot-ok" : "dot-down");
+        text.textContent = text || (ok ? "可达 ✓" : "不可达 ✗");
+      }
+
+      function setBanner(xyzOk, onlineOk) {
+        var banner = document.getElementById("failover-banner");
+        if (!banner) return;
+        if (!xyzOk) {
+          banner.classList.remove("hidden");
+          banner.classList.remove("ok");
+          if (onlineOk) {
+            banner.textContent =
+              "⚠️ 主站 sub.huisuyun.xyz 当前不可达，请改用 .online 备用地址订阅。下方所有订阅均提供 .online 双版本。";
+          } else {
+            banner.textContent =
+              "⚠️ 主站和备用站均不可达，请检查网络或等待维护。若所有入口均不可用，可能需要科学上网后访问本页。";
+          }
+        } else {
+          banner.classList.remove("hidden");
+          banner.classList.add("ok");
+          banner.textContent = "✓ 主站 sub.huisuyun.xyz 当前可达，推荐使用 .xyz 主地址。";
+        }
+      }
+
+      function detect() {
+        var dotXyz = document.getElementById("dot-xyz");
+        var dotOnline = document.getElementById("dot-online");
+        if (dotXyz) dotXyz.className = "dot dot-pending";
+        if (dotOnline) dotOnline.className = "dot dot-pending";
+        var textXyz = document.getElementById("text-xyz");
+        var textOnline = document.getElementById("text-online");
+        if (textXyz) textXyz.textContent = "检测中…";
+        if (textOnline) textOnline.textContent = "检测中…";
+
+        var recheckBtn = document.getElementById("recheck-btn");
+        if (recheckBtn) recheckBtn.disabled = true;
+
+        Promise.all([
+          checkReachable(XYZ_URL, TIMEOUT_MS),
+          checkReachable(ONLINE_URL, TIMEOUT_MS)
+        ]).then(function (results) {
+          var xyzOk = results[0];
+          var onlineOk = results[1];
+
+          setDot("dot-xyz", "text-xyz", xyzOk,
+            xyzOk ? "可达 ✓" : "不可达 ✗（可能被 GFW 封锁）");
+          setDot("dot-online", "text-online", onlineOk,
+            onlineOk ? "可达 ✓" : "不可达 ✗（待 Task 18.18 部署）");
+
+          setBanner(xyzOk, onlineOk);
+
+          if (recheckBtn) recheckBtn.disabled = false;
+        });
+      }
+
+      // Copy to clipboard
+      document.querySelectorAll(".copy-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var url = btn.getAttribute("data-copy");
+          if (!url) return;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function () {
+              btn.textContent = "已复制 ✓";
+              btn.classList.add("copied");
+              setTimeout(function () {
+                btn.textContent = "复制";
+                btn.classList.remove("copied");
+              }, 2000);
+            });
+          } else {
+            // Fallback for older browsers
+            var textarea = document.createElement("textarea");
+            textarea.value = url;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try { document.execCommand("copy"); } catch (e) {}
+            document.body.removeChild(textarea);
+            btn.textContent = "已复制 ✓";
+            btn.classList.add("copied");
+            setTimeout(function () {
+              btn.textContent = "复制";
+              btn.classList.remove("copied");
+            }, 2000);
+          }
+        });
       });
-    });
+
+      // Recheck button
+      var recheckBtn = document.getElementById("recheck-btn");
+      if (recheckBtn) {
+        recheckBtn.addEventListener("click", detect);
+      }
+
+      // Auto-detect on page load
+      detect();
+    })();
   </script>
 </body>
 </html>
