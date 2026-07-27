@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="汇速云官方导航页，提供主站、备用站和订阅入口，含实时容灾检测。">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+  <meta name="description" content="汇速云官方导航页，提供用户中心和备用入口。">
   <title>汇速云导航</title>
   <style>
     :root {
@@ -17,7 +18,6 @@
       --green: #14885f;
       --amber: #a15c00;
       --red: #dc2626;
-      --violet: #6d4aff;
     }
 
     * { box-sizing: border-box; }
@@ -35,7 +35,7 @@
     }
 
     main {
-      width: min(960px, calc(100vw - 32px));
+      width: min(880px, calc(100vw - 32px));
       margin: 0 auto;
       padding: 40px 0;
     }
@@ -65,6 +65,7 @@
       margin: 24px 0 10px;
       font-size: 42px;
       line-height: 1.15;
+      letter-spacing: 0;
     }
 
     .lead {
@@ -75,82 +76,24 @@
       line-height: 1.7;
     }
 
-    /* Failover banner */
     .banner {
       margin-top: 18px;
       padding: 14px 18px;
       border-radius: 8px;
-      background: rgba(220, 38, 38, 0.08);
-      border: 1px solid rgba(220, 38, 38, 0.3);
-      color: var(--red);
+      background: rgba(20, 136, 95, 0.08);
+      border: 1px solid rgba(20, 136, 95, 0.3);
+      color: var(--green);
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 650;
       line-height: 1.6;
     }
-    .banner.ok {
-      background: rgba(20, 136, 95, 0.08);
-      border-color: rgba(20, 136, 95, 0.3);
-      color: var(--green);
-    }
-    .banner.hidden { display: none; }
 
-    /* Live status section */
-    .status-live {
-      margin-top: 18px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: 0 12px 28px rgba(20, 32, 52, 0.08);
-      backdrop-filter: blur(8px);
+    .banner.warning {
+      background: rgba(220, 38, 38, 0.08);
+      border-color: rgba(220, 38, 38, 0.3);
+      color: var(--red);
     }
-    .status-live h2 {
-      margin: 0 0 12px;
-      font-size: 18px;
-    }
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .status-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.7);
-    }
-    .status-item .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      background: var(--muted);
-    }
-    .dot.dot-ok { background: var(--green); }
-    .dot.dot-down { background: var(--red); }
-    .dot.dot-pending { background: var(--amber); animation: pulse 1.2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    .status-item .info { display: flex; flex-direction: column; gap: 2px; }
-    .status-item strong { font-size: 14px; }
-    .status-item .status-text { font-size: 12px; color: var(--muted); }
-
-    .recheck-btn {
-      margin-top: 12px;
-      padding: 6px 16px;
-      border: 1px solid var(--blue);
-      border-radius: 6px;
-      background: transparent;
-      color: var(--blue);
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .recheck-btn:hover { background: rgba(37, 99, 235, 0.06); }
-
-    /* Entry cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -200,11 +143,9 @@
 
     .primary { background: var(--blue); }
     .backup { background: var(--green); }
-    .sub { background: var(--violet); }
-    .warn { background: var(--amber); }
+    .muted { background: var(--amber); }
 
-    /* Subscription list */
-    .subscriptions {
+    .notice {
       margin-top: 18px;
       padding: 18px;
       border: 1px solid var(--line);
@@ -213,91 +154,19 @@
       box-shadow: 0 12px 28px rgba(20, 32, 52, 0.08);
       backdrop-filter: blur(8px);
     }
-    .subscriptions h2 {
-      margin: 0 0 6px;
+
+    .notice h2 {
+      margin: 0 0 8px;
       font-size: 18px;
     }
-    .subscriptions > p {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
 
-    .sub-card {
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      background: rgba(255, 255, 255, 0.6);
-    }
-    .sub-card:last-child { margin-bottom: 0; }
-
-    .sub-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-    .sub-header h3 {
+    .notice p {
       margin: 0;
-      font-size: 15px;
-    }
-    .sub-tag {
-      padding: 2px 8px;
-      border-radius: 4px;
-      background: var(--wash);
       color: var(--muted);
-      font-size: 12px;
+      line-height: 1.7;
+      font-size: 14px;
     }
 
-    .sub-url {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 0;
-      flex-wrap: wrap;
-    }
-    .badge {
-      flex-shrink: 0;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .badge-xyz { background: var(--blue); }
-    .badge-online { background: var(--green); }
-
-    .sub-url code {
-      flex: 1;
-      min-width: 0;
-      font-size: 12px;
-      color: var(--ink);
-      background: var(--wash);
-      padding: 4px 8px;
-      border-radius: 4px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .copy-btn {
-      flex-shrink: 0;
-      padding: 4px 10px;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      background: #fff;
-      color: var(--ink);
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .copy-btn:hover { border-color: var(--blue); color: var(--blue); }
-    .copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
-
-    /* Status baseline */
     .status {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -330,13 +199,12 @@
 
     @media (max-width: 720px) {
       main {
-        width: min(100vw - 24px, 960px);
+        width: min(100vw - 24px, 880px);
         padding: 24px 0;
       }
       h1 { font-size: 32px; }
-      .grid, .status, .status-grid { grid-template-columns: 1fr; }
+      .grid, .status { grid-template-columns: 1fr; }
       .card { padding: 16px; }
-      .sub-url code { font-size: 11px; }
     }
   </style>
 </head>
@@ -347,290 +215,104 @@
         <span class="mark">HS</span>
         <span>汇速云官方导航</span>
       </div>
-      <h1 id="title">选择可用入口</h1>
-      <p class="lead">这里集中放置 Xboard 用户面板、备用入口和订阅入口。页面会自动检测主入口可达性，主入口异常时请改用备用入口。</p>
+      <h1 id="title">选择用户入口</h1>
+      <p class="lead">这里仅提供面向用户的主入口和备用入口。登录后可在用户中心查看套餐、订单、工单、服务状态和订阅信息。</p>
     </section>
 
-    <div id="failover-banner" class="banner hidden">
-      ⚠️ Xboard 用户面板当前不可达，请改用备用入口登录，订阅地址仍可在登录后查看。
-    </div>
-
-    <section class="status-live" aria-label="实时入口状态">
-      <h2>入口实时状态</h2>
-      <div class="status-grid">
-        <div class="status-item">
-          <span class="dot dot-pending" id="dot-xyz"></span>
-          <div class="info">
-            <strong>主站 xboard.huisuyun.xyz</strong>
-            <span class="status-text" id="text-xyz">检测中…</span>
-          </div>
-        </div>
-        <div class="status-item">
-          <span class="dot dot-pending" id="dot-online"></span>
-          <div class="info">
-            <strong>备用 huisuyun.online</strong>
-            <span class="status-text" id="text-online">检测中…</span>
-          </div>
-        </div>
-      </div>
-      <button class="recheck-btn" id="recheck-btn">重新检测</button>
-    </section>
+    <div id="status-banner" class="banner">正在检测主入口可达性...</div>
 
     <section class="grid" aria-label="入口">
       <article class="card">
-        <h2>官网入口</h2>
-        <p>主站使用 Xboard 用户面板，负责日常登录、套餐管理、订单、工单和 VPN 节点订阅。备用站用于主域名异常时继续访问。</p>
+        <h2>主入口</h2>
+        <p>推荐日常登录使用。注册、套餐、订单、工单和客户端配置都在用户中心内完成。</p>
         <div class="actions">
-          <a class="button primary" href="https://xboard.huisuyun.xyz/#/login">打开主站</a>
-          <a class="button backup" href="https://huisuyun.online/login">打开备用站</a>
+          <a class="button primary" href="https://huisuyun.xyz/#/login" target="_blank" rel="noopener">打开主入口</a>
         </div>
       </article>
 
       <article class="card">
-        <h2>订阅管理</h2>
-        <p>客户端节点更新优先使用订阅入口。若客户端提示连接失败，请先刷新订阅，再切换备用入口。</p>
+        <h2>备用入口</h2>
+        <p>当主入口暂时不可达时使用。进入后请登录同一账号查看你的服务信息。</p>
         <div class="actions">
-          <a class="button sub" href="https://sub.huisuyun.xyz/sub">订阅管理页</a>
-          <a class="button warn" href="https://api.huisuyun.online/actuator/health">健康检查</a>
+          <a class="button backup" href="https://huisuyun.online/login" target="_blank" rel="noopener">打开备用入口</a>
         </div>
       </article>
     </section>
 
-    <section class="subscriptions" aria-label="订阅地址获取">
-      <h2>订阅地址获取</h2>
-      <p>订阅地址含个人 token，<strong>请登录用户中心查看</strong>，请勿在公开页面/截图/聊天中分享完整订阅链接，否则他人可冒用你的流量配额。</p>
-
-      <article class="sub-card">
-        <div class="sub-header">
-          <h3>登录用户中心获取</h3>
-          <span class="sub-tag">推荐 · 含个人订阅 token</span>
-        </div>
-        <div class="sub-url">
-          <span class="badge badge-xyz">主站</span>
-          <code>https://xboard.huisuyun.xyz/#/login</code>
-          <a class="copy-btn" href="https://xboard.huisuyun.xyz/#/login" target="_blank" rel="noopener">打开</a>
-        </div>
-        <div class="sub-url">
-          <span class="badge badge-online">备用站</span>
-          <code>https://huisuyun.online/login</code>
-          <a class="copy-btn" href="https://huisuyun.online/login" target="_blank" rel="noopener">打开</a>
-        </div>
-      </article>
-
-      <article class="sub-card">
-        <div class="sub-header">
-          <h3>订阅地址格式</h3>
-          <span class="sub-tag">参考</span>
-        </div>
-        <div class="sub-url">
-          <span class="badge badge-xyz">主</span>
-          <code>https://sub.huisuyun.xyz/vpn/api/sub/&lt;your-token&gt;</code>
-        </div>
-        <div class="sub-url">
-          <span class="badge badge-online">备</span>
-          <code>https://sub.huisuyun.online/vpn/api/sub/&lt;your-token&gt;</code>
-        </div>
-        <p style="margin: 8px 0 0; font-size: 12px; color: var(--muted);">&lt;your-token&gt; 是登录用户中心后从"我的订阅"页面获取的 32 位字符。.xyz 和 .online 返回的订阅内容完全一致，主域名不可达时改用 .online。</p>
-      </article>
-
-      <article class="sub-card">
-        <div class="sub-header">
-          <h3>客户端订阅管理</h3>
-          <span class="sub-tag">Clash / Shadowrocket / v2rayN 等</span>
-        </div>
-        <div class="sub-url">
-          <span class="badge badge-xyz">主</span>
-          <code>https://sub.huisuyun.xyz/sub</code>
-          <a class="copy-btn" href="https://sub.huisuyun.xyz/sub" target="_blank" rel="noopener">打开</a>
-        </div>
-        <div class="sub-url">
-          <span class="badge badge-online">备</span>
-          <code>https://sub.huisuyun.online/sub</code>
-          <a class="copy-btn" href="https://sub.huisuyun.online/sub" target="_blank" rel="noopener">打开</a>
-        </div>
-        <p style="margin: 8px 0 0; font-size: 12px; color: var(--muted);">订阅管理页用于查看节点列表、刷新订阅、查看流量统计。需登录账号才能查看自己的订阅。</p>
-      </article>
+    <section class="notice" aria-label="订阅安全提示">
+      <h2>订阅安全提示</h2>
+      <p>完整订阅地址只在登录后的用户中心展示，请勿在公开页面、截图或聊天中分享。若曾经公开过完整订阅地址，请在用户中心重新生成或联系管理员处理。</p>
     </section>
 
     <section class="status" aria-label="状态基线">
       <div>
-        <strong>主站</strong>
-        xboard.huisuyun.xyz
+        <strong>主入口</strong>
+        用户中心
       </div>
       <div>
-        <strong>备用站</strong>
-        huisuyun.online
+        <strong>备用入口</strong>
+        用户中心备用线路
       </div>
       <div>
         <strong>导航站</strong>
-        huisuyun.cfd
+        当前页面
       </div>
     </section>
 
     <footer>
-      本页面最后更新：2026-07-27。页面自动检测主入口可达性（fetch no-cors + 5s 超时）。若所有入口均不可用，请等待维护完成后重试。
+      本页面最后更新：2026-07-27。若所有入口均不可用，请等待维护完成后重试。
     </footer>
   </main>
 
   <script>
-    /**
-     * Phase 18.F Task 18.19: 容灾切换检测逻辑
-     *
-     * 使用 fetch(mode: 'no-cors') 检测主/备域名可达性：
-     * - no-cors 模式下，只要服务器 TCP 响应（任何 HTTP 状态码），fetch 即 resolve
-     * - DNS 解析失败 / 连接被拒 / 超时 → fetch reject
-     * - 5 秒超时（GFW 封锁通常表现为连接重置或超时）
-     *
-     * GitHub Pages (huisuyun.cfd) 本身不被 GFW 封锁，可作为容灾检测入口。
-     */
     (function () {
       "use strict";
 
+      var MAIN_URL = "https://huisuyun.xyz/?_ping=" + Date.now();
+      var BACKUP_URL = "https://huisuyun.online/login?_ping=" + Date.now();
       var TIMEOUT_MS = 5000;
-      var XYZ_URL = "https://xboard.huisuyun.xyz/?_ping=" + Date.now();
-      var ONLINE_URL = "https://huisuyun.online/login?_ping=" + Date.now();
 
-      function checkReachable(url, timeoutMs) {
+      function probe(url) {
         return new Promise(function (resolve) {
           var settled = false;
-          var controller;
-          try {
-            controller = new AbortController();
-          } catch (e) {
-            // Browser without AbortController — fallback to race
-          }
-
+          var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
           var timer = setTimeout(function () {
-            if (!settled) {
-              settled = true;
-              if (controller) controller.abort();
-              resolve(false);
-            }
-          }, timeoutMs);
-
-          var fetchOpts = { mode: "no-cors", cache: "no-store", redirect: "follow" };
-          if (controller) fetchOpts.signal = controller.signal;
-
-          fetch(url, fetchOpts).then(
-            function () {
-              if (!settled) {
-                settled = true;
-                clearTimeout(timer);
-                resolve(true);
-              }
-            },
-            function () {
-              if (!settled) {
-                settled = true;
-                clearTimeout(timer);
-                resolve(false);
-              }
-            }
-          );
+            if (settled) return;
+            settled = true;
+            if (controller) controller.abort();
+            resolve(false);
+          }, TIMEOUT_MS);
+          var opts = { mode: "no-cors", cache: "no-store", redirect: "follow" };
+          if (controller) opts.signal = controller.signal;
+          fetch(url, opts).then(function () {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            resolve(true);
+          }, function () {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            resolve(false);
+          });
         });
       }
 
-      function setDot(dotId, textId, ok, message) {
-        var dot = document.getElementById(dotId);
-        var textNode = document.getElementById(textId);
-        if (!dot || !textNode) return;
-        dot.className = "dot " + (ok ? "dot-ok" : "dot-down");
-        textNode.textContent = message || (ok ? "可达 ✓" : "不可达 ✗");
-      }
-
-      function setBanner(xyzOk, onlineOk) {
-        var banner = document.getElementById("failover-banner");
+      Promise.all([probe(MAIN_URL), probe(BACKUP_URL)]).then(function (result) {
+        var banner = document.getElementById("status-banner");
         if (!banner) return;
-        if (!xyzOk) {
-          banner.classList.remove("hidden");
-          banner.classList.remove("ok");
-          if (onlineOk) {
-            banner.textContent =
-              "⚠️ Xboard 用户面板当前不可达，请改用 .online 备用入口登录，订阅地址仍可在登录后查看。";
-          } else {
-            banner.textContent =
-              "⚠️ 主站和备用站均不可达，请检查网络或等待维护。若所有入口均不可用，可能需要科学上网后访问本页。";
-          }
-        } else {
-          banner.classList.remove("hidden");
-          banner.classList.add("ok");
-          banner.textContent = "✓ Xboard 用户面板当前可达，推荐使用主站登录。";
+        var mainOk = result[0];
+        var backupOk = result[1];
+        if (mainOk) {
+          banner.textContent = "主入口当前可达，推荐使用主入口登录。";
+          banner.className = "banner";
+          return;
         }
-      }
-
-      function detect() {
-        var dotXyz = document.getElementById("dot-xyz");
-        var dotOnline = document.getElementById("dot-online");
-        if (dotXyz) dotXyz.className = "dot dot-pending";
-        if (dotOnline) dotOnline.className = "dot dot-pending";
-        var textXyz = document.getElementById("text-xyz");
-        var textOnline = document.getElementById("text-online");
-        if (textXyz) textXyz.textContent = "检测中…";
-        if (textOnline) textOnline.textContent = "检测中…";
-
-        var recheckBtn = document.getElementById("recheck-btn");
-        if (recheckBtn) recheckBtn.disabled = true;
-
-        Promise.all([
-          checkReachable(XYZ_URL, TIMEOUT_MS),
-          checkReachable(ONLINE_URL, TIMEOUT_MS)
-        ]).then(function (results) {
-          var xyzOk = results[0];
-          var onlineOk = results[1];
-
-          setDot("dot-xyz", "text-xyz", xyzOk,
-            xyzOk ? "可达 ✓" : "不可达 ✗（可能被 GFW 封锁）");
-          setDot("dot-online", "text-online", onlineOk,
-            onlineOk ? "可达 ✓" : "不可达 ✗（备用入口异常）");
-
-          setBanner(xyzOk, onlineOk);
-
-          if (recheckBtn) recheckBtn.disabled = false;
-        });
-      }
-
-      // Copy to clipboard
-      document.querySelectorAll(".copy-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          var url = btn.getAttribute("data-copy");
-          if (!url) return;
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(function () {
-              btn.textContent = "已复制 ✓";
-              btn.classList.add("copied");
-              setTimeout(function () {
-                btn.textContent = "复制";
-                btn.classList.remove("copied");
-              }, 2000);
-            });
-          } else {
-            // Fallback for older browsers
-            var textarea = document.createElement("textarea");
-            textarea.value = url;
-            textarea.style.position = "fixed";
-            textarea.style.opacity = "0";
-            document.body.appendChild(textarea);
-            textarea.select();
-            try { document.execCommand("copy"); } catch (e) {}
-            document.body.removeChild(textarea);
-            btn.textContent = "已复制 ✓";
-            btn.classList.add("copied");
-            setTimeout(function () {
-              btn.textContent = "复制";
-              btn.classList.remove("copied");
-            }, 2000);
-          }
-        });
+        banner.className = "banner warning";
+        banner.textContent = backupOk
+          ? "主入口当前不可达，请改用备用入口登录。"
+          : "主入口和备用入口当前均不可达，请稍后重试。";
       });
-
-      // Recheck button
-      var recheckBtn = document.getElementById("recheck-btn");
-      if (recheckBtn) {
-        recheckBtn.addEventListener("click", detect);
-      }
-
-      // Auto-detect on page load
-      detect();
     })();
   </script>
 </body>
