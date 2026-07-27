@@ -348,11 +348,11 @@
         <span>汇速云官方导航</span>
       </div>
       <h1 id="title">选择可用入口</h1>
-      <p class="lead">这里集中放置主站、备用站和订阅入口。页面会自动检测主域名可达性，主域名被封时请改用 .online 备用入口。</p>
+      <p class="lead">这里集中放置 Xboard 用户面板、备用入口和订阅入口。页面会自动检测主入口可达性，主入口异常时请改用备用入口。</p>
     </section>
 
     <div id="failover-banner" class="banner hidden">
-      ⚠️ 主站 sub.huisuyun.xyz 当前不可达，请改用 .online 备用地址订阅。下方所有订阅均提供 .online 双版本。
+      ⚠️ Xboard 用户面板当前不可达，请改用备用入口登录，订阅地址仍可在登录后查看。
     </div>
 
     <section class="status-live" aria-label="实时入口状态">
@@ -361,14 +361,14 @@
         <div class="status-item">
           <span class="dot dot-pending" id="dot-xyz"></span>
           <div class="info">
-            <strong>主站 sub.huisuyun.xyz</strong>
+            <strong>主站 xboard.huisuyun.xyz</strong>
             <span class="status-text" id="text-xyz">检测中…</span>
           </div>
         </div>
         <div class="status-item">
           <span class="dot dot-pending" id="dot-online"></span>
           <div class="info">
-            <strong>备用 sub.huisuyun.online</strong>
+            <strong>备用 huisuyun.online</strong>
             <span class="status-text" id="text-online">检测中…</span>
           </div>
         </div>
@@ -379,10 +379,10 @@
     <section class="grid" aria-label="入口">
       <article class="card">
         <h2>官网入口</h2>
-        <p>主站用于日常登录、授权验证、套餐管理和 VPN 节点订阅。备用站用于主域名异常时继续访问。</p>
+        <p>主站使用 Xboard 用户面板，负责日常登录、套餐管理、订单、工单和 VPN 节点订阅。备用站用于主域名异常时继续访问。</p>
         <div class="actions">
-          <a class="button primary" href="https://huisuyun.xyz/">打开主站</a>
-          <a class="button backup" href="https://huisuyun.online/">打开备用站</a>
+          <a class="button primary" href="https://xboard.huisuyun.xyz/#/login">打开主站</a>
+          <a class="button backup" href="https://huisuyun.online/login">打开备用站</a>
         </div>
       </article>
 
@@ -407,8 +407,8 @@
         </div>
         <div class="sub-url">
           <span class="badge badge-xyz">主站</span>
-          <code>https://huisuyun.xyz/login</code>
-          <a class="copy-btn" href="https://huisuyun.xyz/login" target="_blank" rel="noopener">打开</a>
+          <code>https://xboard.huisuyun.xyz/#/login</code>
+          <a class="copy-btn" href="https://xboard.huisuyun.xyz/#/login" target="_blank" rel="noopener">打开</a>
         </div>
         <div class="sub-url">
           <span class="badge badge-online">备用站</span>
@@ -455,7 +455,7 @@
     <section class="status" aria-label="状态基线">
       <div>
         <strong>主站</strong>
-        huisuyun.xyz
+        xboard.huisuyun.xyz
       </div>
       <div>
         <strong>备用站</strong>
@@ -468,7 +468,7 @@
     </section>
 
     <footer>
-      本页面最后更新：2026-07-15。页面自动检测主域名可达性（fetch no-cors + 5s 超时）。若所有入口均不可用，请等待维护完成后重试。
+      本页面最后更新：2026-07-27。页面自动检测主入口可达性（fetch no-cors + 5s 超时）。若所有入口均不可用，请等待维护完成后重试。
     </footer>
   </main>
 
@@ -487,8 +487,8 @@
       "use strict";
 
       var TIMEOUT_MS = 5000;
-      var XYZ_URL = "https://sub.huisuyun.xyz/?_ping=" + Date.now();
-      var ONLINE_URL = "https://sub.huisuyun.online/?_ping=" + Date.now();
+      var XYZ_URL = "https://xboard.huisuyun.xyz/?_ping=" + Date.now();
+      var ONLINE_URL = "https://huisuyun.online/login?_ping=" + Date.now();
 
       function checkReachable(url, timeoutMs) {
         return new Promise(function (resolve) {
@@ -530,12 +530,12 @@
         });
       }
 
-      function setDot(dotId, textId, ok, text) {
+      function setDot(dotId, textId, ok, message) {
         var dot = document.getElementById(dotId);
-        var text = document.getElementById(textId);
-        if (!dot || !text) return;
+        var textNode = document.getElementById(textId);
+        if (!dot || !textNode) return;
         dot.className = "dot " + (ok ? "dot-ok" : "dot-down");
-        text.textContent = text || (ok ? "可达 ✓" : "不可达 ✗");
+        textNode.textContent = message || (ok ? "可达 ✓" : "不可达 ✗");
       }
 
       function setBanner(xyzOk, onlineOk) {
@@ -546,7 +546,7 @@
           banner.classList.remove("ok");
           if (onlineOk) {
             banner.textContent =
-              "⚠️ 主站 sub.huisuyun.xyz 当前不可达，请改用 .online 备用地址订阅。下方所有订阅均提供 .online 双版本。";
+              "⚠️ Xboard 用户面板当前不可达，请改用 .online 备用入口登录，订阅地址仍可在登录后查看。";
           } else {
             banner.textContent =
               "⚠️ 主站和备用站均不可达，请检查网络或等待维护。若所有入口均不可用，可能需要科学上网后访问本页。";
@@ -554,7 +554,7 @@
         } else {
           banner.classList.remove("hidden");
           banner.classList.add("ok");
-          banner.textContent = "✓ 主站 sub.huisuyun.xyz 当前可达，推荐使用 .xyz 主地址。";
+          banner.textContent = "✓ Xboard 用户面板当前可达，推荐使用主站登录。";
         }
       }
 
@@ -581,7 +581,7 @@
           setDot("dot-xyz", "text-xyz", xyzOk,
             xyzOk ? "可达 ✓" : "不可达 ✗（可能被 GFW 封锁）");
           setDot("dot-online", "text-online", onlineOk,
-            onlineOk ? "可达 ✓" : "不可达 ✗（待 Task 18.18 部署）");
+            onlineOk ? "可达 ✓" : "不可达 ✗（备用入口异常）");
 
           setBanner(xyzOk, onlineOk);
 
