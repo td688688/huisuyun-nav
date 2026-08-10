@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
   <meta name="description" content="汇速云官方导航页，提供用户中心和备用入口。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%2314885f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='36' height='36' rx='8' fill='url(%23g)'/%3E%3Ctext x='18' y='25' font-family='sans-serif' font-size='18' font-weight='800' fill='%23fff' text-anchor='middle'%3EHS%3C/text%3E%3C/svg%3E">
   <title>汇速云导航</title>
   <style>
     :root {
@@ -12,7 +13,6 @@
       --ink: #172033;
       --muted: #667085;
       --line: #d8dee8;
-      --paper: #ffffff;
       --wash: #eef3f8;
       --blue: #2563eb;
       --green: #14885f;
@@ -101,7 +101,7 @@
       margin-top: 18px;
     }
 
-    .card {
+    .card, .notice {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.92);
@@ -110,16 +110,24 @@
       backdrop-filter: blur(8px);
     }
 
-    .card h2 {
+    .card h2, .notice h2 {
       margin: 0 0 8px;
       font-size: 18px;
     }
 
-    .card p {
+    .card p, .notice p {
       margin: 0 0 14px;
       color: var(--muted);
       line-height: 1.65;
       font-size: 14px;
+    }
+
+    .notice {
+      margin-top: 18px;
+    }
+
+    .notice p {
+      margin-bottom: 0;
     }
 
     .actions {
@@ -143,29 +151,6 @@
 
     .primary { background: var(--blue); }
     .backup { background: var(--green); }
-    .muted { background: var(--amber); }
-
-    .notice {
-      margin-top: 18px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: 0 12px 28px rgba(20, 32, 52, 0.08);
-      backdrop-filter: blur(8px);
-    }
-
-    .notice h2 {
-      margin: 0 0 8px;
-      font-size: 18px;
-    }
-
-    .notice p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 14px;
-    }
 
     .status {
       display: grid;
@@ -204,7 +189,7 @@
       }
       h1 { font-size: 32px; }
       .grid, .status { grid-template-columns: 1fr; }
-      .card { padding: 16px; }
+      .card, .notice { padding: 16px; }
     }
   </style>
 </head>
@@ -226,7 +211,7 @@
         <h2>主入口</h2>
         <p>推荐日常登录使用。注册、套餐、订单、工单和客户端配置都在用户中心内完成。</p>
         <div class="actions">
-          <a class="button primary" href="https://huisuyun.xyz/#/login" target="_blank" rel="noopener">打开主入口</a>
+          <a class="button primary" href="https://xboard.huisuyun.xyz/#/login" target="_blank" rel="noopener">打开主入口</a>
         </div>
       </article>
 
@@ -268,7 +253,7 @@
     (function () {
       "use strict";
 
-      var MAIN_URL = "https://huisuyun.xyz/?_ping=" + Date.now();
+      var MAIN_URL = "https://xboard.huisuyun.xyz/?_ping=" + Date.now();
       var BACKUP_URL = "https://huisuyun.online/login?_ping=" + Date.now();
       var TIMEOUT_MS = 5000;
 
